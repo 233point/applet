@@ -1,0 +1,73 @@
+<style lang="less">
+  .pannel{
+    text-align: left;
+    font-size: 14px;
+    padding: 20rpx;
+    margin-bottom: 20px;
+    background-color: #fff;
+    .pannel-title{
+      border-bottom:1px solid #ccc;
+    }
+    .pannel-content{
+      min-height:50rpx;
+      margin-top:10px;
+    }
+  }
+  .tags{
+      background-color:#F1F1F1;
+      color: #9B9B9B;
+      margin-right: 15px;
+      padding:5px 10px;
+      border-radius:1em;
+      display: inline-block;
+      font-size: 60%;
+      }
+</style>
+<template>
+<view>
+   <view class="pannel">
+    <view class="pannel-title">大家都在搜</view>
+    <view class="pannel-content">
+       <text  wx:for="{{searchTags}}" wx:key="index" bindtap="tapAll({{item}})" class="tags">{{item}}</text>
+    </view>
+  </view>
+   <view class="pannel">
+    <view class="pannel-title">搜索历史</view>
+    <view class="pannel-content">
+       <text wx:for="{{searchHistory}}" wx:key="index" bindtap="tapHistory({{item}})" class="tags">{{item}}</text>
+    </view>
+  </view>
+</view>
+
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class PanelTag extends wepy.component {
+    props = {
+      searchTags:{
+        type:Object,
+        default:['7月新番','工作细胞']
+      },
+      searchHistory:{
+        type:Object,
+        default:['7月新番','工作细胞']
+      }
+    }
+
+    methods = {
+      tapAll(item){
+        console.log(item)
+        wx.navigateTo({
+              url: '/pages/search?inputVal='+item
+            })
+      },
+      tapHistory(item){
+        console.log(item)
+        wx.navigateTo({
+              url: '/pages/search?inputVal='+item
+            })
+      }
+    }
+  }
+</script>

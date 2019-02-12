@@ -1,0 +1,23 @@
+.pannel {
+  text-align: left;
+  font-size: 14px;
+  padding: 20rpx;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+.pannel .pannel-title {
+  border-bottom: 1px solid #ccc;
+}
+.pannel .pannel-content {
+  min-height: 50rpx;
+  margin-top: 10px;
+}
+.tags {
+  background-color: #F1F1F1;
+  color: #9B9B9B;
+  margin-right: 15px;
+  padding: 5px 10px;
+  border-radius: 1em;
+  display: inline-block;
+  font-size: 60%;
+}

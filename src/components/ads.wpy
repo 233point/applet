@@ -1,0 +1,58 @@
+<template>
+  <view class="ads-body">
+    <!-- <scroll-view class="scroll-view_H" scroll-x style="width: 100%">
+          <text selectable="true" class="scroll-view-item_H color-pink">{{ads}}</text>
+    </scroll-view> -->
+     <swiper class="swiper" style="height:30px" autoplay="{{autoplay}}"
+   indicator-dots="{{indicatorDots}}">
+      <swiper-item wx:for="{{ads}}"  wx:key="index">
+          <text  class="scroll-view-item_H color-pink">{{item}}</text>
+      </swiper-item>
+  </swiper>
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ads extends wepy.component {
+    props = {
+      ads: {
+        type: Object,
+        default: ['欢迎加群：575180837','主站：www.calamus.xyz']
+      }
+    }
+
+    data = {
+      autoplay: true,
+      indicatorDots:false,
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+    }
+
+
+  }
+</script>
+
+<style type="less">
+.ads-body{
+  border-left:3px solid #FF5577;
+  padding-left:5px;
+}
+.scroll-view_H{
+  display: flex;
+  white-space: nowrap;
+  /* color:#FF5577 */
+}
+.scroll-view-item_H{
+  font-size:14px;
+  display: inline-block;
+}
+
+</style>

@@ -1,0 +1,128 @@
+<!--
+@page 首页：推荐新番
+-->
+<style lang="less">
+  .userinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userinfo-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+  }
+
+  .userinfo-nickname {
+    color: #aaa;
+  }
+</style>
+<template>
+  <view>
+    <!-- <SearchBar :placeholder="searchText"></SearchBar> -->
+    <Swiper :list.sync="swipers" height="280"></Swiper>
+    <Ads :ads="ads"></Ads>
+    <animeList :list.sync="list" title="追番推荐"
+     :loading.sync="loading" :noMore.sync="noMoreList"></animeList>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import Panel from '@/components/panel' // alias example
+  import Counter from 'counter' // alias example
+  import List from '../components/list' // aliasFields example
+  import moduleA from 'module-a' // aliasFields ignore module example
+  import Group from '../components/group'
+  import Toast from 'wepy-com-toast'
+  import testMixin from '../mixins/test'
+  import Swiper from '../components/swiper'
+  import SearchBar from '../components/searchbar'
+  import Ads from '../components/ads'
+  import animeList from '../components/animeList'
+
+
+
+  console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
+
+  @connect({
+    num (state) {
+      return state.counter.num
+    },
+    asyncNum (state) {
+      return state.counter.asyncNum
+    },
+    sumNum (state) {
+      return state.counter.num + state.counter.asyncNum
+    }
+  })
+
+  export default class Top extends wepy.page {
+    config = {
+      navigationBarTitleText: '追番推荐'
+    }
+    components = {
+      panel: Panel,
+      counter1: Counter,
+      counter2: Counter,
+      list: List,
+      group: Group,
+      toast: Toast,
+      Swiper:Swiper,
+      SearchBar:SearchBar,
+      Ads:Ads,
+      animeList:animeList
+    }
+
+    mixins = [testMixin]
+
+    data = {
+      swipers: [
+        {image: 'https://233.calamus.xyz/2.jpg', url: ''},
+        {image: 'https://233.calamus.xyz/3.jpg', url: ''}
+      ],
+      ads:['欢迎加群：575180837','主站：www.calamus.xyz'],
+      list:[]
+    }
+
+    computed = {
+      now () {
+        return +new Date()
+      }
+    }
+//wxml事件处理函数对象，存放响应wxml中所捕获到的事件的函数，如bindtap、bindchange
+    methods = {
+      
+    }
+//WePY组件事件处理函数对象，存放响应组件之间通过$broadcast、$emit、$invoke所传递的事件的函数
+    events = {
+      
+    }
+    onReady(){
+      this.initPage();
+    }
+    onLoad() {
+      let self = this
+    }
+    
+  //生命周期函数，其他自定义方法等
+    initPage(){
+        this.getAnime()
+        this.initPageData()
+    }
+    initPageData(){
+      // 处理轮播图
+      this.swipers.push({image: 'https://233.calamus.xyz/1.jpg',url:''})
+    }
+    async getAnime(){
+        const db = wx.cloud.database()
+        await db.collection('anime').get().then(res=>{
+            this.list = res.data ;
+            console.log(this.list)
+            this.$apply();
+        })
+    }
+  }
+</script>

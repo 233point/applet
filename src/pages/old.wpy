@@ -1,0 +1,130 @@
+<!--
+@page 类型索引
+-->
+<style lang="less">
+
+</style>
+<template>
+    <view  >
+          <SearchBar type="tag"  :placeholder="searchText"></SearchBar>
+    <!--主内容区域-->
+      <view wx:if="{{init}}" class="main-box row">
+        <SideTab :tab.sync="categories"  @switchTab.user="switchTab"/>
+        <scroll-view scroll-y class="goods-box">
+          <imageList :list.sync="list"></imageList>
+        </scroll-view>
+      </view>
+
+      <view wx:else>
+        敬请期待
+      </view>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import SideTab from '../components/side_tab'
+  import imageList from '../components/imageList'
+  import SearchBar from '../components/searchbar'
+  import Ads from '../components/ads'
+  import base from '../mixins/base'
+  import http from '../mixins/http'
+
+
+
+  export default class Old extends wepy.page {
+    mixins = [base, http]
+    config = {
+      navigationBarTitleText: '类型索引'
+    }
+    components = {
+      SideTab:SideTab,
+      imageList:imageList,
+      SearchBar:SearchBar,
+      Ads:Ads
+    }
+
+    mixins = []
+
+    data = {
+      init:true,
+      currentId:'1',
+      currentTitle:'搞笑',
+      tagList:[],
+      list:[],
+      categories: {
+        'list':[
+          ],
+          'selectedId':'1',
+          'currentTitle':'搞笑'
+        }
+    }
+
+    computed = {
+    }
+
+    methods = {
+      // 点击分类
+      switchTab(item) {
+        console.log(item)
+        this.currentId = item.id;
+        this.currentTitle = item.title;
+        this.getList()
+      }
+
+    }
+
+    events = {
+
+    }
+
+    onLoad() {
+      this.initPage()
+      this.getList()
+    }
+    onReady() {
+    }
+    initPage(){
+      this.getAnimeTag()
+    }
+    search(){
+      wx.navigateTo({
+          url: '/pages/searchTag'
+        })
+    }
+    async getAnimeTag(){
+      const db = wx.cloud.database()
+      await db.collection('tag').get().then(res=>{
+          this.categories.list = res.data ;
+          console.log(this.categories.list)
+          this.$apply();
+      })
+    }
+    async getList(){
+       const db = wx.cloud.database()
+       const _ = db.command
+        await db.collection('anime').where({
+            tag: _.in([this.currentTitle]),
+        })
+        .get().then(res=>{
+          console.log(res.data)
+          this.list = res.data ;
+          this.$apply();
+        })
+    }
+  }
+</script>
+<style lang="less">
+.main-box{
+  display:flex;
+  width: 100%;
+  position: absolute;
+  top:49px;
+  bottom: 0px;
+  .goods-box{
+    flex: 1;
+    height: 100%;
+  }
+  }
+</style>
+

@@ -1,0 +1,28 @@
+<style lang="less">
+page{
+
+}
+</style>
+<template>
+  <web-view src="{{path}}">
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class webDetail extends wepy.page {
+    data = {
+      path:"https://mp.weixin.qq.com/s/MhnNBpyQS_uDdO6FUlte1w"
+    }
+
+    events = {
+
+    }
+
+    methods = {
+
+    }
+
+    onLoad () {
+    }
+  }
+</script>
